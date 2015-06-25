@@ -53,7 +53,7 @@ function put_public_key() {
 function config_named_conf_options {
   # allow-recursion { 127.0.0.1; };
 
-  sed -i.bak -e "s/^\s*allow-recursion.*$/\tallow-recursion { $ALLOW_RECURSION }/" /etc/bind9/named.conf.options
+  sed -i.bak -e "s/^\s*allow-recursion.*$/\tallow-recursion { $ALLOW_RECURSION }/" /etc/bind/named.conf.options
 }
 
 

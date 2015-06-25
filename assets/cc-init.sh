@@ -53,7 +53,8 @@ function put_public_key() {
 function config_named_conf_options {
   # allow-recursion { 127.0.0.1; };
 
-  sed -i.bak -e "s/^\s*allow-recursion.*$/\tallow-recursion { $ALLOW_RECURSION }/" /etc/bind/named.conf.options
+  sed -i.bak -e "s/^\s*allow-query.*$/\tallow-query     { $ALLOW_QUERY }\;/"     /etc/bind/named.conf.options
+  sed -i     -e "s/^\s*allow-recursion.*$/\tallow-recursion { $ALLOW_QUERY }\;/" /etc/bind/named.conf.options
 }
 
 
@@ -73,11 +74,19 @@ function proc_supervisor () {
 command=/usr/sbin/sshd -D
 
 [program:bind9]
-command=service bind9 restart
+command=/opt/cc-bind9.sh
 
 [program:rsyslog]
 command=/usr/sbin/rsyslogd -n
 EOF
+
+  cat >> /opt/cc-bind9.sh <<EOF
+#!/bin/bash
+service bind9 start
+tail -F /var/log/syslog
+EOF
+
+  chmod +x /opt/cc-bind9.sh
 }
 
 

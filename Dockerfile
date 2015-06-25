@@ -17,7 +17,7 @@ RUN apt-get update && apt-get -y upgrade \
   && apt-get install -y language-pack-ja language-pack-ja-base \
   && update-locale LANG="en_US.UTF-8" \
   && apt-get install -y openssh-server supervisor rsyslog \
-  && apt-get install -y bind9 \
+  && apt-get install -y bind9 dnsutils \
   && apt-get clean \
   && mkdir -p /var/run/sshd \
   && sed -ri "s/^PermitRootLogin\s+.*/PermitRootLogin yes/" /etc/ssh/sshd_config

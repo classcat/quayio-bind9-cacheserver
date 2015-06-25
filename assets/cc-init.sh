@@ -46,6 +46,17 @@ function put_public_key() {
 }
 
 
+#############
+### BIND9 ###
+#############
+
+function config_named_conf_options {
+  # allow-recursion { 127.0.0.1; };
+
+  sed -i.bak -e "s/^\s*allow-recursion.*$/\tallow-recursion { $ALLOW_RECURSION }/" named.conf.options
+}
+
+
 ##################
 ### SUPERVISOR ###
 ##################
@@ -61,8 +72,8 @@ function proc_supervisor () {
 [program:ssh]
 command=/usr/sbin/sshd -D
 
-#[program:gmon]
-#command=service ganglia-monitor restart
+[program:bind9]
+command=service bind9 restart
 
 [program:rsyslog]
 command=/usr/sbin/rsyslogd -n
@@ -75,7 +86,7 @@ EOF
 init
 change_root_password
 put_public_key
-
+config_named_conf_options
 proc_supervisor
 
 # /usr/bin/supervisord -c /etc/supervisor/supervisord.conf
